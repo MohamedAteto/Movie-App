@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/models/move_model.dart';
 import 'package:movie_app/providers/movie_provider.dart';
+import 'package:movie_app/screens/book_seat_page.dart';
+import 'package:movie_app/screens/booking_details.dart';
 import 'package:movie_app/widges/movie_item_componant.dart';
+import 'package:movie_app/widges/seet_item.dart';
 import 'package:provider/provider.dart';
 
 class MovieSeats extends StatelessWidget {
@@ -17,12 +20,7 @@ class MovieSeats extends StatelessWidget {
         child: Column(
           mainAxisAlignment: .center,
           children: [
-            MovieItemComponant(
-              name: moviModel.name,
-              showDate: moviModel.showDate,
-              showTime: moviModel.showTime,
-              imageUrl: moviModel.poster,
-            ),
+            MovieItemComponant(moviModel: moviModel),
             SizedBox(height: 5),
 
             Text(
@@ -40,7 +38,7 @@ class MovieSeats extends StatelessWidget {
 
                 if (moviesList == null) {
                   value.GetMoviesFromProvider();
-                  return const Center(child: CircularProgressIndicator());
+                  return Center(child: CircularProgressIndicator());
                 }
                 final currentmovies = moviesList.moviListData.firstWhere(
                   (item) => item.id == moviModel.id,
@@ -48,21 +46,47 @@ class MovieSeats extends StatelessWidget {
 
                 final seats = currentmovies.seets;
 
-                Expanded(
+                return Expanded(
                   child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 5,
-                childAspectRatio: 1.4,
-                crossAxisSpacing: 5,
-                mainAxisSpacing: 10,
-              ),
-              itemBuilder: (context, index) {
-                return Card(
-                  
-                )
-              },
-            ),
-               )
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 5,
+                      childAspectRatio: 1.4,
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 10,
+                    ),
+                    itemCount: seats.length,
+                    itemBuilder: (context, index) {
+                      final seet = seats[index];
+                      return SeetItem(
+                        seatNumber: seet.seetNumber,
+                        status: seet.status,
+                        onTap: () {
+                          if (seet.status == "Available") {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BookSeatPage(
+                                  movie: currentmovies,
+                                  seat: seet,
+                                ),
+                              ),
+                            );
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BookingDetailsPage(
+                                  movie: currentmovies,
+                                  seat: seet,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      );
+                    },
+                  ),
+                );
               },
             ),
           ],

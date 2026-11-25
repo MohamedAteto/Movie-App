@@ -2,15 +2,15 @@ import 'package:dio/dio.dart';
 
 class BookingServices {
   static Dio dio = Dio();
-
-  static Future<void> addBooking({
+  // In your API service:
+  static Future<Response> addBooking({
     required int movieId,
     required int seetId,
     required String customerName,
   }) async {
     try {
-      final Response response = await dio.post(
-        " https://apimovie.runasp.net/api/Bookings ",
+      return await dio.post(
+        "https://apimovie.runasp.net/api/Bookings",
         data: {
           "movieId": movieId,
           "seatId": seetId,
@@ -18,9 +18,12 @@ class BookingServices {
         },
       );
     } on DioException catch (dioException) {
-      throw Exception("Dio Error: ${dioException.message}");
+      final apiMessage = dioException.response?.data ?? dioException.message;
+      throw Exception(
+        "Dio Error (${dioException.response?.statusCode}): $apiMessage",
+      );
     } catch (other) {
-      throw Exception("Other Error: ${other.toString()}");
+      throw Exception("Other Error: $other");
     }
   }
 

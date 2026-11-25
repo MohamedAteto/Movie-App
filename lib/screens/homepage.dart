@@ -32,12 +32,7 @@ class Homepage extends StatelessWidget {
 
               itemBuilder: (context, index) {
                 final opject = List[index];
-                return MovieItemComponant(
-                  name: opject.name,
-                  showDate: opject.showDate,
-                  showTime: opject.showTime,
-                  imageUrl: opject.poster,
-                );
+                return MovieItemComponant(moviModel: opject);
               },
             );
           }

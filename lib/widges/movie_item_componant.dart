@@ -1,19 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/models/move_model.dart';
 import 'package:movie_app/screens/movie_seats.dart';
 
 class MovieItemComponant extends StatelessWidget {
-  final String name;
-  final String showDate;
-  final String showTime;
-  final String imageUrl;
+  final MoviModel moviModel;
 
-  MovieItemComponant({
-    super.key,
-    required this.name,
-    required this.showDate,
-    required this.showTime,
-    required this.imageUrl,
-  });
+  MovieItemComponant({required this.moviModel, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +14,7 @@ class MovieItemComponant extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MovieSeats(
-              name: name,
-              showDate: showDate,
-              showTime: showTime,
-              imageUrl: imageUrl,
-            ),
+            builder: (context) => MovieSeats(moviModel: moviModel),
           ),
         );
       },
@@ -39,7 +26,7 @@ class MovieItemComponant extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
-                  imageUrl,
+                  moviModel.poster,
                   width: 70,
                   height: 95,
                   fit: BoxFit.cover,
@@ -51,7 +38,7 @@ class MovieItemComponant extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      name,
+                      moviModel.name,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -66,7 +53,7 @@ class MovieItemComponant extends StatelessWidget {
                             alignment: PlaceholderAlignment.middle,
                           ),
                           const TextSpan(text: ' '),
-                          TextSpan(text: showDate),
+                          TextSpan(text: moviModel.showDate),
                         ],
                       ),
                     ),
@@ -81,7 +68,7 @@ class MovieItemComponant extends StatelessWidget {
 
                           const TextSpan(text: ' '),
 
-                          TextSpan(text: showTime),
+                          TextSpan(text: moviModel.showTime),
                         ],
                       ),
                     ),

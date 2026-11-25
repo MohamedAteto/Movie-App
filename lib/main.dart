@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/providers/movie_provider.dart';
+import 'package:movie_app/providers/seets_provider.dart';
 import 'package:movie_app/screens/homepage.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +14,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => MovieProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (context) => MovieProvider()),
+        ChangeNotifierProvider(create: (context) => BookingProvider()),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
